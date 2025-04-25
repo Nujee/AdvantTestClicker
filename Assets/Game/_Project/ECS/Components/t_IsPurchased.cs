@@ -1,0 +1,1 @@
+public struct t_IsPurchased {}

@@ -24,7 +24,7 @@ public class EntryInstaller : MonoBehaviour
 
     private void InitBusinessData(BusinessData[] businessData)
     {
-        var businessComponentPool = _world.GetPool<BusinessComponent>();
+        var businessComponentPool = _world.GetPool<c_Business>();
 
         for (int i = 0; i < businessData.Length; i++)
         {
@@ -37,6 +37,8 @@ public class EntryInstaller : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-       //saveService.SaveProgress()
+        var a = _world.GetPool<c_Business>();
+
+        //saveService.SaveProgress();
     }
 }

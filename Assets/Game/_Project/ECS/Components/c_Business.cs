@@ -5,9 +5,7 @@ public struct c_Business
 {
     public int Id;
     public int Level;
-    public float IncomeDelay;
     public float BasePrice;
-    public float BaseIncome;
-    public List<(bool isPurchased, float factor)> Upgrades;
+    public List<(bool isPurchased, float multiplier)> Upgrades;
     public EcsPackedEntity PlayerBalancePacked;
 }

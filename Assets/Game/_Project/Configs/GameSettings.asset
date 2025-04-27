@@ -18,5 +18,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c22cec2fddab74d46ba7185e9a97f7b7, type: 2}
   - {fileID: 11400000, guid: 11b3a64d5371bf146801b95ea15dbc49, type: 2}
   - {fileID: 11400000, guid: 6ae72367e9753de4290864467e13c720, type: 2}
-  Names: {fileID: 11400000, guid: 1a927d466b943544c913573fb454c41a, type: 2}
   InitialBalance: 150
+  BusinessPrefab: {fileID: 2728106238526251105, guid: 1c89b5952e28bf347b9e08dede006a3d, type: 3}

@@ -3,10 +3,10 @@ using UnityEngine;
 
 public sealed class s_ProgressIncome : IEcsInitSystem, IEcsRunSystem
 {
-    private EcsFilter _filter = default;
-
     private EcsPool<c_IncomeDelay> _incomeDelayPool = default;
     private EcsPool<t_IsIncomeReady> _incomeReadyTagPool = default;
+
+    private EcsFilter _filter = default;
 
     private EcsWorld _world = default;
 
@@ -14,7 +14,8 @@ public sealed class s_ProgressIncome : IEcsInitSystem, IEcsRunSystem
     {
         _world = systems.GetWorld();
 
-        _filter = _world.Filter<c_IncomeDelay>()
+        _filter = _world
+            .Filter<c_IncomeDelay>()
             .Inc<t_IsPurchased>()
             .End();
 

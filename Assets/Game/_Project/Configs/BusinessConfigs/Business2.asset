@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f75034b766014f43929f6deebd24809, type: 3}
   m_Name: Business2
   m_EditorClassIdentifier: 
-  incomeDelay: 6
-  basePrice: 40
-  baseIncome: 40
+  Id: 0
+  BaseIncomeDelay: 0
+  BasePrice: 0
+  BaseIncome: 0
+  Titles: {fileID: 11400000, guid: 3a338bb4318d48747a8846ca82400c5f, type: 2}
+  Upgrades:
+  - Id: 0
+    price: 0
+    multiplier: 0

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c20f5b5833b52e46b73bfa2e2adabb1, type: 3}
   m_Name: B1Titles
   m_EditorClassIdentifier: 
-  BusinessTitle: 
-  Upgrade1Title: 
-  Upgrade2Title: 
+  BusinessTitle: Business 1
+  Upgrade1Title: Upgrade 1
+  Upgrade2Title: Upgrade 2

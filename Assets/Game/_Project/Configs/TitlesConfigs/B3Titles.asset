@@ -9,16 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f75034b766014f43929f6deebd24809, type: 3}
-  m_Name: Business1Config
+  m_Script: {fileID: 11500000, guid: 3c20f5b5833b52e46b73bfa2e2adabb1, type: 3}
+  m_Name: B3Titles
   m_EditorClassIdentifier: 
-  businessTitle: Business1
-  incomeDelay: 3
-  baseCost: 3
-  baseIncome: 3
-  upgrade1:
-    price: 50
-    profitMultiplier: 0.5
-  upgrade2:
-    price: 400
-    profitMultiplier: 1
+  BusinessTitle: 
+  Upgrade1Title: 
+  Upgrade2Title: 

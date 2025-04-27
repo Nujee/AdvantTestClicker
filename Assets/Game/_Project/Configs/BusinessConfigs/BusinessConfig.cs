@@ -1,19 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BusinessConfig", menuName = "Configs/BusinessConfig")]
+[CreateAssetMenu(fileName = "Business", menuName = "Configs/Business")]
 public class BusinessConfig : ScriptableObject
 {
-    [System.Serializable]
-    public struct Upgrade
-    {
-        public float price;
-        public float profitMultiplier;
-    }
-
-    public string businessTitle;
-    public float incomeDelay;
-    public float baseCost;
-    public float baseIncome;
-    public Upgrade upgrade1;
-    public Upgrade upgrade2;
+    public float IncomeDelay;
+    public float BasePrice;
+    public float BaseIncome;
+    public List<(float price, float multiplier)> Upgrades;
+    public TitlesConfig Titles;
 }

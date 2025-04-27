@@ -10,15 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f75034b766014f43929f6deebd24809, type: 3}
-  m_Name: Business3Config
+  m_Name: Business1
   m_EditorClassIdentifier: 
-  businessTitle: Business3
-  incomeDelay: 10
-  baseCost: 200
-  baseIncome: 200
-  upgrade1:
-    price: 6000
-    profitMultiplier: 1
-  upgrade2:
-    price: 20000
-    profitMultiplier: 1.5
+  businessTitle: Business 1
+  incomeDelay: 3
+  basePrice: 3
+  baseIncome: 3
+  upgradesList:
+  - {fileID: 11400000, guid: 2e605550594f5354a80ff3cd5820cb9e, type: 2}
+  - {fileID: 11400000, guid: 410006221262a7048a2280b1a2f1f122, type: 2}

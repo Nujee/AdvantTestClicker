@@ -9,12 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c9b761f9dc8e8f44be00de33696005a, type: 3}
-  m_Name: GameConfig
+  m_Script: {fileID: 11500000, guid: 299a72a8943896f44834a36a88897e6a, type: 3}
+  m_Name: GameSettings
   m_EditorClassIdentifier: 
-  businesses:
+  Businesses:
   - {fileID: 11400000, guid: c4969b1532e40e245b0700a3c8e86531, type: 2}
   - {fileID: 11400000, guid: edb24e7164a3d7e4e88294b7a5edb9a3, type: 2}
   - {fileID: 11400000, guid: c22cec2fddab74d46ba7185e9a97f7b7, type: 2}
   - {fileID: 11400000, guid: 11b3a64d5371bf146801b95ea15dbc49, type: 2}
   - {fileID: 11400000, guid: 6ae72367e9753de4290864467e13c720, type: 2}
+  Names: {fileID: 11400000, guid: 1a927d466b943544c913573fb454c41a, type: 2}
+  InitialBalance: 150

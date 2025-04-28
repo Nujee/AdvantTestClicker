@@ -538,7 +538,7 @@ GameObject:
   - component: {fileID: 1870402156099307568}
   - component: {fileID: 5608405289457456366}
   m_Layer: 5
-  m_Name: Income (Text)
+  m_Name: Multiplier (Text)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -746,6 +746,7 @@ GameObject:
   - component: {fileID: 6815059314384397965}
   - component: {fileID: 5249324905577202931}
   - component: {fileID: 4826206856205113932}
+  - component: {fileID: 3049490376455574878}
   m_Layer: 5
   m_Name: BusinessPanel
   m_TagString: Untagged
@@ -840,6 +841,31 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &3049490376455574878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2728106238526251105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af25d525fc470a249a0cf3cdf934e517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <TitleText>k__BackingField: {fileID: 5863003684948045503}
+  <LevelText>k__BackingField: {fileID: 5652605830511558607}
+  <IncomeText>k__BackingField: {fileID: 2565853837156919297}
+  <LevelUpText>k__BackingField: {fileID: 1681190535809088007}
+  <Upgrade1View>k__BackingField:
+    <TitleText>k__BackingField: {fileID: 1672745455916300763}
+    <MultiplierText>k__BackingField: {fileID: 5608405289457456366}
+    <PurchasedStatusText>k__BackingField: {fileID: 5049539533831993856}
+  <Upgrade2View>k__BackingField:
+    <TitleText>k__BackingField: {fileID: 6401121069315087677}
+    <MultiplierText>k__BackingField: {fileID: 5559830532495438164}
+    <PurchasedStatusText>k__BackingField: {fileID: 3039126672084181441}
+  <IncomeDelaySlider>k__BackingField: {fileID: 8116618990408636439}
 --- !u!1 &2815113834596242729
 GameObject:
   m_ObjectHideFlags: 0
@@ -2773,7 +2799,7 @@ GameObject:
   - component: {fileID: 7589530688277456839}
   - component: {fileID: 5559830532495438164}
   m_Layer: 5
-  m_Name: Income (Text)
+  m_Name: Multiplier (Text)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

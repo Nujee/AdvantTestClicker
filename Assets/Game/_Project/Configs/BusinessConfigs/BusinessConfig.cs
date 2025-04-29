@@ -2,22 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Business", menuName = "Configs/Business")]
-public class BusinessConfig : ScriptableObject
+public sealed class BusinessConfig : ScriptableObject
 {
-    [HideInInspector] public int Id;
-
-    public float BaseIncomeDelay;
-    public float BasePrice;
-    public float BaseIncome;
-    public TitlesConfig Titles;
-    public List<Upgrade> Upgrades;
-
-    [System.Serializable]
-    public class Upgrade
-    {
-        [HideInInspector] public int Id;
-
-        public float price;
-        public float multiplier;
-    }
+    [field: SerializeField] public int Id { get; private set; }
+    [field:SerializeField] public float BasePrice { get; private set; }
+    [field: SerializeField] public float BaseIncome { get; private set; }
+    [field: SerializeField] public float BaseIncomeDelay { get; private set; }
+    [field: SerializeField] public TitlesConfig Titles { get; private set; }
+    [field: SerializeField] public List<UpgradeConfig> Upgrades { get; private set; }
 }

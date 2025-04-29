@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 299a72a8943896f44834a36a88897e6a, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  Businesses:
-  - {fileID: 11400000, guid: c4969b1532e40e245b0700a3c8e86531, type: 2}
-  - {fileID: 11400000, guid: edb24e7164a3d7e4e88294b7a5edb9a3, type: 2}
-  - {fileID: 11400000, guid: c22cec2fddab74d46ba7185e9a97f7b7, type: 2}
-  - {fileID: 11400000, guid: 11b3a64d5371bf146801b95ea15dbc49, type: 2}
-  - {fileID: 11400000, guid: 6ae72367e9753de4290864467e13c720, type: 2}
-  InitialBalance: 150
-  BusinessPrefab: {fileID: 2728106238526251105, guid: 1c89b5952e28bf347b9e08dede006a3d, type: 3}
+  <BusinessEntries>k__BackingField:
+  - Id: 1
+    Config: {fileID: 11400000, guid: c4969b1532e40e245b0700a3c8e86531, type: 2}
+    Titles: {fileID: 11400000, guid: 9b3100b892330f447a028a153e53f9bb, type: 2}
+  - Id: 2
+    Config: {fileID: 11400000, guid: 914c9f8cbc0766443bc9c8474473a477, type: 2}
+    Titles: {fileID: 11400000, guid: 3a338bb4318d48747a8846ca82400c5f, type: 2}
+  - Id: 3
+    Config: {fileID: 11400000, guid: c22cec2fddab74d46ba7185e9a97f7b7, type: 2}
+    Titles: {fileID: 11400000, guid: a1747c42fcf948c4f8317480a2a50627, type: 2}
+  <InitialBalance>k__BackingField: 200

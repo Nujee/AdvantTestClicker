@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f75034b766014f43929f6deebd24809, type: 3}
   m_Name: Business3
   m_EditorClassIdentifier: 
-  IncomeDelay: 0
-  BasePrice: 0
-  BaseIncome: 0
-  Titles: {fileID: 11400000, guid: a1747c42fcf948c4f8317480a2a50627, type: 2}
+  <Id>k__BackingField: 3
+  <BasePrice>k__BackingField: 200
+  <BaseIncome>k__BackingField: 200
+  <BaseIncomeDelay>k__BackingField: 10
+  <Titles>k__BackingField: {fileID: 11400000, guid: a1747c42fcf948c4f8317480a2a50627, type: 2}
+  <Upgrades>k__BackingField:
+  - {fileID: 11400000, guid: 7e8a9dd4e5a405f4997f9136bca18c20, type: 2}
+  - {fileID: 11400000, guid: 3271d8c1a28abb848a3bbd6bd67f102c, type: 2}

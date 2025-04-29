@@ -1,17 +1,17 @@
 using Leopotam.EcsLite;
-using System.Collections.Generic;
 
 public struct c_BusinessState : IEcsAutoReset<c_BusinessState>
 {
-    public int Level;
-    public float IncomeDelayElapsed;
-    public List<UpgradeState> UpgradeStates;
+    public ReactiveProperty<int> Level;
+    public ReactiveProperty<float> Income;
+    public ReactiveProperty<float> LevelUpPrice;
+    public ReactiveProperty<(float raw, float normalized)> IncomeDelayElapsed;
 
-    public void AutoReset(ref c_BusinessState c) => c.UpgradeStates = new List<UpgradeState>();
-
-    public struct UpgradeState
+    public void AutoReset(ref c_BusinessState c)
     {
-        public int Id;
-        public bool IsPurchased;
+        c.Level = new ReactiveProperty<int>();
+        c.Income = new ReactiveProperty<float>();
+        c.LevelUpPrice = new ReactiveProperty<float>();
+        c.IncomeDelayElapsed = new ReactiveProperty<(float raw, float normalized)>();
     }
 }

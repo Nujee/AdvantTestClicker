@@ -19,6 +19,7 @@ public sealed class s_IncreaseBusinessLevel : IEcsInitSystem, IEcsRunSystem
         _world = systems.GetWorld();
         _levelledUpBusinessfilter = _world
             .Filter<c_BusinessState>()
+            .Inc<c_BusinessData>()
             .Inc<r_LevelUpClicked>()
             .End();
 
@@ -38,6 +39,7 @@ public sealed class s_IncreaseBusinessLevel : IEcsInitSystem, IEcsRunSystem
                 ref var c_playerBalance = ref _balancePool.Get(playerEntityUnpacked);
                 ref var c_state = ref _businessStatePool.Get(businessEntity);
 
+                // Check if balance is enough to level up
                 if (c_playerBalance.Amount.Value >= c_state.LevelUpPrice.Value)
                 {
                     // Update player balance
@@ -45,12 +47,12 @@ public sealed class s_IncreaseBusinessLevel : IEcsInitSystem, IEcsRunSystem
                     r_updateBalance.Amount = -c_state.LevelUpPrice.Value;
 
                     // Update business level
-                    // If it was 0 -> 1 level-up, then tag as purchased
+                    // If it was 0 -> 1 transition, then tag as purchased
                     c_state.Level.Value++;
                     if (c_state.Level.Value == 1)
                         _world.GetPool<t_IsPurchased>().Add(businessEntity);
 
-                    // Update business level-up price
+                    // Update business level-up price according to formula
                     var config = _settings.BusinessConfigsById[c_data.Id];
                     c_state.LevelUpPrice.Value = (c_state.Level.Value + 1) * config.BasePrice;
 

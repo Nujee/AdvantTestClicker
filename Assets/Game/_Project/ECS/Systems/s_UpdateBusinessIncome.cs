@@ -1,9 +1,11 @@
 using Leopotam.EcsLite;
+using System.Linq;
 
 public sealed class s_UpdateBusinessIncome : IEcsInitSystem, IEcsRunSystem
 {
     private EcsPool<c_BusinessState> _businessStatePool = default;
     private EcsPool<c_BusinessData> _businessDataPool = default;
+    private EcsPool<c_BusinessUpgrades> _businessUpgradesPool = default;    
     private EcsPool<r_UpdateBusinessIncome> _updateBusinessIncomeRequestPool = default;
 
     private EcsFilter _ownedBusinessWithIncomeToUpdateFilter = default;
@@ -27,6 +29,7 @@ public sealed class s_UpdateBusinessIncome : IEcsInitSystem, IEcsRunSystem
 
         _businessStatePool = _world.GetPool<c_BusinessState>();
         _businessDataPool = _world.GetPool<c_BusinessData>();
+        _businessUpgradesPool = _world.GetPool<c_BusinessUpgrades>();
         _updateBusinessIncomeRequestPool = _world.GetPool<r_UpdateBusinessIncome>();
     }
 
@@ -36,9 +39,15 @@ public sealed class s_UpdateBusinessIncome : IEcsInitSystem, IEcsRunSystem
         {
             ref var c_state = ref _businessStatePool.Get(businessEntity);
             ref var c_data = ref _businessDataPool.Get(businessEntity);
+            ref var c_upgrades = ref _businessUpgradesPool.Get(businessEntity);
 
             var config = _settings.BusinessConfigsById[c_data.Id];
-            c_state.Income.Value = c_state.Level.Value * config.BaseIncome; // * (1 + u1multip + u2multip)
+
+            var totalUpgradesFactor = c_upgrades.InfoById
+                .Where(u => u.Value.PurchaseData.Value.isPurchased)
+                .Sum(u => u.Value.Factor);
+
+            c_state.Income.Value = c_state.Level.Value * config.BaseIncome * (1 + totalUpgradesFactor);
 
             _updateBusinessIncomeRequestPool.Del(businessEntity);
         }

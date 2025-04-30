@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 9
   <Price>k__BackingField: 100000
-  <PercentMultiplier>k__BackingField: 200
+  <PercentFactor>k__BackingField: 200

@@ -17,7 +17,8 @@ MonoBehaviour:
   <BaseIncomeDelay>k__BackingField: 30
   <Titles>k__BackingField: {fileID: 11400000, guid: 6b6c6681b3872854bae7299bdeab2f6d, type: 2}
   <Upgrades>k__BackingField:
-  - Id: 1
-    Value: {fileID: 11400000, guid: 9e4ec0f6051673f42a14afd433d1c2ed, type: 2}
-  - Id: 2
-    Value: {fileID: 11400000, guid: 400587852c36edd499d31af7a7064861, type: 2}
+    _pairs:
+    - Id: 1
+      Value: {fileID: 11400000, guid: 9e4ec0f6051673f42a14afd433d1c2ed, type: 2}
+    - Id: 2
+      Value: {fileID: 11400000, guid: 400587852c36edd499d31af7a7064861, type: 2}

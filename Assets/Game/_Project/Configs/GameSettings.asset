@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 299a72a8943896f44834a36a88897e6a, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  <BusinessEntries>k__BackingField:
-  - Id: 1
-    Config: {fileID: 11400000, guid: c4969b1532e40e245b0700a3c8e86531, type: 2}
-    Titles: {fileID: 11400000, guid: 9b3100b892330f447a028a153e53f9bb, type: 2}
-  - Id: 2
-    Config: {fileID: 11400000, guid: 914c9f8cbc0766443bc9c8474473a477, type: 2}
-    Titles: {fileID: 11400000, guid: 3a338bb4318d48747a8846ca82400c5f, type: 2}
-  - Id: 3
-    Config: {fileID: 11400000, guid: c22cec2fddab74d46ba7185e9a97f7b7, type: 2}
-    Titles: {fileID: 11400000, guid: a1747c42fcf948c4f8317480a2a50627, type: 2}
-  <InitialBalance>k__BackingField: 200
+  <InitialBalance>k__BackingField: 0
+  <BusinessConfigsById>k__BackingField:
+    _pairs:
+    - Id: 1
+      Value: {fileID: 11400000, guid: c4969b1532e40e245b0700a3c8e86531, type: 2}
+    - Id: 2
+      Value: {fileID: 11400000, guid: 914c9f8cbc0766443bc9c8474473a477, type: 2}
+    - Id: 3
+      Value: {fileID: 11400000, guid: c22cec2fddab74d46ba7185e9a97f7b7, type: 2}
+    - Id: 4
+      Value: {fileID: 11400000, guid: da420c82fbe69b94d8cd3876a36c4b7f, type: 2}
+    - Id: 5
+      Value: {fileID: 11400000, guid: 4308406ba5740a64ab9ae258c06203ef, type: 2}

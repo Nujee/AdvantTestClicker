@@ -1,8 +1,7 @@
 using UnityEngine;
 using Leopotam.EcsLite;
-using System.Threading;
 
-public class EntryPoint : MonoBehaviour
+public sealed class EntryPoint : MonoBehaviour
 {
     [field: SerializeField] public BalancePanelView BalancePanelView { get; private set; }
     [field: SerializeField] public RectTransform BusinessViewsParent { get; private set; }
@@ -23,36 +22,11 @@ public class EntryPoint : MonoBehaviour
 
         var playerEntity = _world.NewEntity();
 
-        ref var c_playerBalance = ref _world.GetPool<c_Balance>().Add(playerEntity);
-        BalancePanelView.Init(_world, playerEntity);
-        c_playerBalance.Amount.Value = Settings.InitialBalance;
+        InitPlayer(playerEntity);
 
-        var businessViewPool = new GenericPool<BusinessPanelView> (BusinessPanelPrefab, 5, BusinessViewsParent);
+        InitBusinesses(playerEntity);
 
-        foreach (var businessIdToConfig in Settings.BusinessConfigsById)
-        {
-            var businessEntity = _world.NewEntity();
-
-            ref var c_data = ref _world.GetPool<c_BusinessData>().Add(businessEntity);
-            c_data.Id = businessIdToConfig.Key;
-            c_data.PlayerEntityPacked = _world.PackEntity(playerEntity);
-
-            ref var c_state = ref _world.GetPool<c_BusinessState>().Add(businessEntity);
-            var businessView = businessViewPool.Get();
-            businessView.Init(Settings, _world, businessEntity);
-            SetUpBusinessState(ref c_state, ref c_data);
-
-            if (c_state.Level.Value == 1)
-                _world.GetPool<t_IsPurchased>().Add(businessEntity);
-        }
-
-        _systems
-            .Add(new s_UpdateBalance())
-            .Add(new s_UpdateBusinessIncome(Settings))
-            .Add(new s_IncreaseBusinessLevel(Settings))
-            .Add(new s_ElapseIncomeDelay(Settings))
-            .Add(new s_CollectBusinessIncome(Settings))
-            .Init();
+        InitSystems();
     }
 
     private void Update()
@@ -71,6 +45,55 @@ public class EntryPoint : MonoBehaviour
         //saveService.SaveProgress();
     }
 
+    private void InitPlayer(int playerEntity)
+    {
+        ref var c_playerBalance = ref _world.GetPool<c_Balance>().Add(playerEntity);
+        BalancePanelView.Init(_world, playerEntity);
+        c_playerBalance.Amount.Value = Settings.InitialBalance;
+    }
+
+    private void InitBusinesses(int playerEntity)
+    {
+        var businessViewPool = new GenericPool<BusinessPanelView>(BusinessPanelPrefab, 5, BusinessViewsParent);
+
+        foreach (var businessConfigById in Settings.BusinessConfigsById)
+        {
+            var businessEntity = _world.NewEntity();
+
+            ref var c_data = ref _world.GetPool<c_BusinessData>().Add(businessEntity);
+            c_data.Id = businessConfigById.Key;
+            c_data.PlayerEntityPacked = _world.PackEntity(playerEntity);
+
+            ref var c_state = ref _world.GetPool<c_BusinessState>().Add(businessEntity);
+            var businessView = businessViewPool.Get();
+            businessView.Init(Settings, _world, businessEntity);
+            SetUpBusinessState(ref c_state, ref c_data);
+
+            ref var c_upgrades = ref _world.GetPool<c_BusinessUpgrades>().Add(businessEntity);
+            foreach (var upgradeConfigById in businessConfigById.Value.Upgrades)
+            {
+                var upgradeId = upgradeConfigById.Key;
+                var upgradeConfig = upgradeConfigById.Value;
+                var upgradeInfo = c_upgrades.InfoById;
+
+                upgradeInfo[upgradeId] = new UpgradeInfo
+                (
+                    purchaseData: default,
+                    factor: upgradeConfig.PercentFactor * 0.01f
+                );
+
+                var upgradeView = businessView.UpgradeViews[upgradeId];
+                upgradeView.Init(upgradeId, Settings, _world, businessEntity);
+
+                var upgradePurchaseData = upgradeInfo[upgradeId].PurchaseData;
+                upgradePurchaseData.Value = (upgradeConfig.Price, false);
+            }
+
+            if (c_state.Level.Value == 1)
+                _world.GetPool<t_IsPurchased>().Add(businessEntity);
+        }
+    }
+
     private void SetUpBusinessState(ref c_BusinessState c_state, ref c_BusinessData c_data)
     {
         var config = Settings.BusinessConfigsById[c_data.Id];
@@ -83,5 +106,17 @@ public class EntryPoint : MonoBehaviour
         c_state.Income.Value = config.BaseIncome;
 
         c_state.IncomeDelayElapsed.Value = (0f, 0f);
+    }
+
+    private void InitSystems()
+    {
+        _systems
+            .Add(new s_UpdateBalance())
+            .Add(new s_UpdateBusinessIncome(Settings))
+            .Add(new s_IncreaseBusinessLevel(Settings))
+            .Add(new s_BuyBusinessUpgrade())
+            .Add(new s_ElapseIncomeDelay(Settings))
+            .Add(new s_CollectBusinessIncome(Settings))
+            .Init();
     }
 }

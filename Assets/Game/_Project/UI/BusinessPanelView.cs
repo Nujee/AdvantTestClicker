@@ -9,6 +9,7 @@ public sealed class BusinessPanelView : MonoBehaviour
     private ReactiveProperty<int> _level;
     private ReactiveProperty<float> _levelUpPrice;
     private ReactiveProperty<(float raw, float normalized)> _incomeDelay;
+    private ReactiveProperty<float> _balance;
 
     [field: SerializeField] public TMP_Text TitleText { get; private set; }
     [field: SerializeField] public TMP_Text LevelText { get; private set; }
@@ -18,25 +19,29 @@ public sealed class BusinessPanelView : MonoBehaviour
     [field: SerializeField] public Button LevelUpButton { get; private set; }
     [field: SerializeField] public IdMapSerializable<UpgradeView> UpgradeViews { get; private set; }
 
-    public void Init(GameSettingsConfig settings, EcsWorld world, int businessEntity)
+    public void Init(GameSettingsConfig settings, EcsWorld world, int businessEntity, int playerEntity)
     {
         ref var c_state = ref world.GetPool<c_BusinessState>().Get(businessEntity);
         ref var c_data = ref world.GetPool<c_BusinessData>().Get(businessEntity);
+        ref var c_balance = ref world.GetPool<c_Balance>().Get(playerEntity); 
 
         var titleConfig = settings.BusinessConfigsById[c_data.Id].Titles;
         TitleText.text = titleConfig.BusinessTitle;
 
         _income = c_state.Income;
-        _income.OnValueSet += RenewIncomeText;
+        _income.OnValueSet += UpdateIncomeText;
 
         _level = c_state.Level;
-        _level.OnValueSet += RenewLevelText;
+        _level.OnValueSet += UpdateLevelText;
 
         _levelUpPrice = c_state.LevelUpPrice;
-        _levelUpPrice.OnValueSet += RenewLevelUpPriceText;
+        _levelUpPrice.OnValueSet += UpdateLevelUpPriceText;
 
         _incomeDelay = c_state.IncomeDelayElapsed;
-        _incomeDelay.OnValueSet += MoveIncomeDelaySlider;
+        _incomeDelay.OnValueSet += UpdateIncomeDelaySlider;
+
+        _balance = c_balance.Amount;
+        _balance.OnValueSet += UpdateLevelUpButtonState;
 
         LevelUpButton.onClick.AddListener(() =>
         {
@@ -47,35 +52,41 @@ public sealed class BusinessPanelView : MonoBehaviour
     private void OnDestroy()
     {
         if (_income != null)
-            _income.OnValueSet -= RenewIncomeText;
+            _income.OnValueSet -= UpdateIncomeText;
 
         if (_level != null)
-            _level.OnValueSet -= RenewLevelText;
+            _level.OnValueSet -= UpdateLevelText;
 
         if (_levelUpPrice != null)
-            _levelUpPrice.OnValueSet -= RenewLevelUpPriceText;
+            _levelUpPrice.OnValueSet -= UpdateLevelUpPriceText;
 
         if (_incomeDelay != null)
-            _incomeDelay.OnValueSet -= MoveIncomeDelaySlider;
+            _incomeDelay.OnValueSet -= UpdateIncomeDelaySlider;
     }
 
-    private void RenewIncomeText(float newIncome)
+    private void UpdateIncomeText(float newIncome)
     {
         IncomeText.text = $"{newIncome:0.##}$"; 
     }
 
-    private void RenewLevelText(int newLevel)
+    private void UpdateLevelText(int newLevel)
     {
         LevelText.text = newLevel.ToString();
     }
 
-    private void RenewLevelUpPriceText(float newLevelUpPrice)
+    private void UpdateLevelUpPriceText(float newLevelUpPrice)
     {
         LevelUpText.text = $"Цена: {newLevelUpPrice:0.##}$";
     }
 
-    private void MoveIncomeDelaySlider((float raw, float normalized) delayElapsed)
+    private void UpdateIncomeDelaySlider((float raw, float normalized) delayElapsed)
     {
         IncomeDelaySlider.value = delayElapsed.normalized;
+    }
+
+    private void UpdateLevelUpButtonState(float newBalance)
+    {
+        var isBalanceEnough = (newBalance >= _levelUpPrice.Value);
+        LevelUpButton.interactable = isBalanceEnough;
     }
 }

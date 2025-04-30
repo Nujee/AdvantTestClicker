@@ -76,11 +76,9 @@ public sealed class UpgradeView : MonoBehaviour
         var isUpgradeNotPurchased = !_purchaseData.Value.isPurchased;
         var isBalanceEnough = _balance.Value >= _purchaseData.Value.price;
 
-        bool isInteractable = isBusinessPurchased &&
-                             isUpgradeNotPurchased &&
-                             isBalanceEnough;
-
-        BuyButton.interactable = isInteractable;
+        BuyButton.interactable = isBusinessPurchased &&
+                                 isUpgradeNotPurchased &&
+                                 isBalanceEnough;
     }
 
     private void UpdateButtonState(float _) => UpdateButtonState();

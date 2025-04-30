@@ -1,5 +1,7 @@
 using UnityEngine;
 using Leopotam.EcsLite;
+using static Leopotam.EcsLite.EcsWorld;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public sealed class EntryPoint : MonoBehaviour
 {
@@ -59,53 +61,71 @@ public sealed class EntryPoint : MonoBehaviour
         foreach (var businessConfigById in Settings.BusinessConfigsById)
         {
             var businessEntity = _world.NewEntity();
+            var businessId = businessConfigById.Key;
+            var businessConfig = businessConfigById.Value;
 
-            ref var c_data = ref _world.GetPool<c_BusinessData>().Add(businessEntity);
-            c_data.Id = businessConfigById.Key;
-            c_data.PlayerEntityPacked = _world.PackEntity(playerEntity);
+            // State initialization is split to let BusinessView subscribe to reactive properties
+            // before initial values are set, ensuring proper visual updates.
+            InitData();
+            InitState();
+            InitUpgrades(InitView());
+            SetStateValues();
 
-            ref var c_state = ref _world.GetPool<c_BusinessState>().Add(businessEntity);
-            var businessView = businessViewPool.Get();
-            businessView.Init(Settings, _world, businessEntity);
-            SetUpBusinessState(ref c_state, ref c_data);
-
-            ref var c_upgrades = ref _world.GetPool<c_BusinessUpgrades>().Add(businessEntity);
-            foreach (var upgradeConfigById in businessConfigById.Value.Upgrades)
+            void InitData()
             {
-                var upgradeId = upgradeConfigById.Key;
-                var upgradeConfig = upgradeConfigById.Value;
-                var upgradeInfo = c_upgrades.InfoById;
-
-                upgradeInfo[upgradeId] = new UpgradeInfo
-                (
-                    purchaseData: default,
-                    factor: upgradeConfig.PercentFactor * 0.01f
-                );
-
-                var upgradeView = businessView.UpgradeViews[upgradeId];
-                upgradeView.Init(upgradeId, Settings, _world, businessEntity);
-
-                var upgradePurchaseData = upgradeInfo[upgradeId].PurchaseData;
-                upgradePurchaseData.Value = (upgradeConfig.Price, false);
+                ref var c_data = ref _world.GetPool<c_BusinessData>().Add(businessEntity);
+                c_data.Id = businessConfigById.Key;
+                c_data.PlayerEntityPacked = _world.PackEntity(playerEntity);
             }
 
-            if (c_state.Level.Value == 1)
-                _world.GetPool<t_IsPurchased>().Add(businessEntity);
+            void InitState()
+            {
+                ref var c_state = ref _world.GetPool<c_BusinessState>().Add(businessEntity);
+            }
+
+            BusinessPanelView InitView()
+            {
+                var view = businessViewPool.Get();
+                view.Init(Settings, _world, businessEntity);
+
+                return view;
+            }
+
+            void SetStateValues()
+            {
+                ref var c_state = ref _world.GetPool<c_BusinessState>().Get(businessEntity);
+                c_state.Level.Value = (businessId == 1) ? 1 : 0;
+                c_state.LevelUpPrice.Value = (c_state.Level.Value + 1) * businessConfig.BasePrice;
+                c_state.Income.Value = businessConfig.BaseIncome;
+                c_state.IncomeDelayElapsed.Value = (0f, 0f);
+
+                if (c_state.Level.Value == 1)
+                    _world.GetPool<t_IsPurchased>().Add(businessEntity);
+            }
+
+            void InitUpgrades(BusinessPanelView view)
+            {
+                ref var c_upgrades = ref _world.GetPool<c_BusinessUpgrades>().Add(businessEntity);
+                foreach (var upgradeConfigById in businessConfigById.Value.Upgrades)
+                {
+                    var upgradeId = upgradeConfigById.Key;
+                    var upgradeConfig = upgradeConfigById.Value;
+                    var upgradeInfo = c_upgrades.InfoById;
+
+                    upgradeInfo[upgradeId] = new UpgradeInfo
+                    (
+                        purchaseData: default,
+                        factor: upgradeConfig.PercentFactor * 0.01f
+                    );
+
+                    var upgradeView = view.UpgradeViews[upgradeId];
+                    upgradeView.Init(upgradeId, Settings, _world, businessEntity);
+
+                    var upgradePurchaseData = upgradeInfo[upgradeId].PurchaseData;
+                    upgradePurchaseData.Value = (upgradeConfig.Price, false);
+                }
+            }
         }
-    }
-
-    private void SetUpBusinessState(ref c_BusinessState c_state, ref c_BusinessData c_data)
-    {
-        var config = Settings.BusinessConfigsById[c_data.Id];
-
-        c_state.Level.Value = (c_data.Id == 1) ? 1 : 0;
-
-        var levelUpPrice = (c_state.Level.Value + 1) * config.BasePrice;
-        c_state.LevelUpPrice.Value = levelUpPrice;
-
-        c_state.Income.Value = config.BaseIncome;
-
-        c_state.IncomeDelayElapsed.Value = (0f, 0f);
     }
 
     private void InitSystems()

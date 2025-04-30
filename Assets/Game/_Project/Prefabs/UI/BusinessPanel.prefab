@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0426\u0435\u043D\u0430: 50$"
+  m_text: "\u0426\u0435\u043D\u0430: 72$"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 806862740800483581}
   - component: {fileID: 3039126672084181441}
   m_Layer: 5
-  m_Name: PurchaseInfo (Text)
+  m_Name: PurchaseData (Text)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -538,7 +538,7 @@ GameObject:
   - component: {fileID: 1870402156099307568}
   - component: {fileID: 5608405289457456366}
   m_Layer: 5
-  m_Name: Multiplier (Text)
+  m_Name: Factor (Text)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -857,16 +857,14 @@ MonoBehaviour:
   <LevelText>k__BackingField: {fileID: 5652605830511558607}
   <IncomeText>k__BackingField: {fileID: 2565853837156919297}
   <LevelUpText>k__BackingField: {fileID: 1681190535809088007}
-  <LevelUpButton>k__BackingField: {fileID: 4355741432563635718}
-  <Upgrade1View>k__BackingField:
-    <TitleText>k__BackingField: {fileID: 1672745455916300763}
-    <MultiplierText>k__BackingField: {fileID: 5608405289457456366}
-    <PurchasedStatusText>k__BackingField: {fileID: 5049539533831993856}
-  <Upgrade2View>k__BackingField:
-    <TitleText>k__BackingField: {fileID: 6401121069315087677}
-    <MultiplierText>k__BackingField: {fileID: 5559830532495438164}
-    <PurchasedStatusText>k__BackingField: {fileID: 3039126672084181441}
   <IncomeDelaySlider>k__BackingField: {fileID: 8116618990408636439}
+  <LevelUpButton>k__BackingField: {fileID: 4355741432563635718}
+  <UpgradeViews>k__BackingField:
+    _pairs:
+    - Id: 1
+      Value: {fileID: 2966992521791138955}
+    - Id: 2
+      Value: {fileID: 4279832213424424326}
 --- !u!1 &2815113834596242729
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,9 +1203,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '0$
-
-'
+  m_text: 10$
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1557,6 +1553,7 @@ GameObject:
   - component: {fileID: 8160473133560913026}
   - component: {fileID: 7671264916116946070}
   - component: {fileID: 52329138896127434}
+  - component: {fileID: 4279832213424424326}
   m_Layer: 5
   m_Name: Upgrade2Button
   m_TagString: Untagged
@@ -1694,6 +1691,22 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &4279832213424424326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4629409723955117575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d65855c965f247d488fd99c5107873f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <BuyButton>k__BackingField: {fileID: 7671264916116946070}
+  <TitleText>k__BackingField: {fileID: 6401121069315087677}
+  <FactorText>k__BackingField: {fileID: 5559830532495438164}
+  <PurchasedStatusText>k__BackingField: {fileID: 3039126672084181441}
 --- !u!1 &5681836360005679425
 GameObject:
   m_ObjectHideFlags: 0
@@ -1759,7 +1772,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 69
+  m_text: 13
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1975,6 +1988,7 @@ GameObject:
   - component: {fileID: 7648138989214707318}
   - component: {fileID: 1984820828327739944}
   - component: {fileID: 629990056019178849}
+  - component: {fileID: 2966992521791138955}
   m_Layer: 5
   m_Name: Upgrade1Button
   m_TagString: Untagged
@@ -2112,6 +2126,22 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2966992521791138955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6174313827093352836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d65855c965f247d488fd99c5107873f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <BuyButton>k__BackingField: {fileID: 1984820828327739944}
+  <TitleText>k__BackingField: {fileID: 1672745455916300763}
+  <FactorText>k__BackingField: {fileID: 5608405289457456366}
+  <PurchasedStatusText>k__BackingField: {fileID: 5049539533831993856}
 --- !u!1 &6614277872471678191
 GameObject:
   m_ObjectHideFlags: 0
@@ -2124,7 +2154,7 @@ GameObject:
   - component: {fileID: 2301850506149930531}
   - component: {fileID: 5049539533831993856}
   m_Layer: 5
-  m_Name: PurchaseInfo (Text)
+  m_Name: PurchaseData (Text)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2800,7 +2830,7 @@ GameObject:
   - component: {fileID: 7589530688277456839}
   - component: {fileID: 5559830532495438164}
   m_Layer: 5
-  m_Name: Multiplier (Text)
+  m_Name: Factor (Text)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

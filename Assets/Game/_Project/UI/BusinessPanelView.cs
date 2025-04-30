@@ -1,5 +1,4 @@
 using Leopotam.EcsLite;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,10 +14,9 @@ public sealed class BusinessPanelView : MonoBehaviour
     [field: SerializeField] public TMP_Text LevelText { get; private set; }
     [field: SerializeField] public TMP_Text IncomeText { get; private set; }
     [field: SerializeField] public TMP_Text LevelUpText { get; private set; }
-    [field: SerializeField] public Button LevelUpButton { get; private set; }
-    [field: SerializeField] public UpgradeView Upgrade1View { get; private set; }
-    [field: SerializeField] public UpgradeView Upgrade2View { get; private set; }
     [field: SerializeField] public Slider IncomeDelaySlider { get; private set; }
+    [field: SerializeField] public Button LevelUpButton { get; private set; }
+    [field: SerializeField] public IdMapSerializable<UpgradeView> UpgradeViews { get; private set; }
 
     public void Init(GameSettingsConfig settings, EcsWorld world, int businessEntity)
     {
@@ -46,9 +44,24 @@ public sealed class BusinessPanelView : MonoBehaviour
         });
     }
 
+    private void OnDestroy()
+    {
+        if (_income != null)
+            _income.OnValueSet -= RenewIncomeText;
+
+        if (_level != null)
+            _level.OnValueSet -= RenewLevelText;
+
+        if (_levelUpPrice != null)
+            _levelUpPrice.OnValueSet -= RenewLevelUpPriceText;
+
+        if (_incomeDelay != null)
+            _incomeDelay.OnValueSet -= MoveIncomeDelaySlider;
+    }
+
     private void RenewIncomeText(float newIncome)
     {
-        IncomeText.text = newIncome.ToString("0.##") + "$"; 
+        IncomeText.text = $"{newIncome:0.##}$"; 
     }
 
     private void RenewLevelText(int newLevel)
@@ -58,31 +71,11 @@ public sealed class BusinessPanelView : MonoBehaviour
 
     private void RenewLevelUpPriceText(float newLevelUpPrice)
     {
-        LevelUpText.text = "Цена: " + newLevelUpPrice.ToString("0.##") + "$";
+        LevelUpText.text = $"Цена: {newLevelUpPrice:0.##}$";
     }
 
     private void MoveIncomeDelaySlider((float raw, float normalized) delayElapsed)
     {
         IncomeDelaySlider.value = delayElapsed.normalized;
-    }
-
-    private void OnDestroy()
-    {
-        if (_income != null) 
-            _income.OnValueSet -= RenewIncomeText;
-
-        if (_level != null) 
-            _level.OnValueSet -= RenewLevelText;
-
-        if (_incomeDelay != null)
-            _incomeDelay.OnValueSet -= MoveIncomeDelaySlider;
-    }
-
-    [System.Serializable]
-    public sealed class UpgradeView
-    {
-        [field: SerializeField] public TMP_Text TitleText { get; private set; }
-        [field: SerializeField] public TMP_Text MultiplierText { get; private set; }
-        [field: SerializeField] public TMP_Text PurchasedStatusText { get; private set; }
     }
 }

@@ -5,6 +5,7 @@ public sealed class s_IncreaseBusinessLevel : IEcsInitSystem, IEcsRunSystem
     private EcsPool<c_BusinessState> _businessStatePool = default;
     private EcsPool<c_BusinessData> _businessDataPool = default;
     private EcsPool<c_Balance> _balancePool = default;
+    private EcsPool<r_UpdateBalance> _updateBalancePool = default;
 
     private EcsFilter _levelledUpBusinessfilter = default;
 
@@ -26,6 +27,7 @@ public sealed class s_IncreaseBusinessLevel : IEcsInitSystem, IEcsRunSystem
         _businessStatePool = _world.GetPool<c_BusinessState>();
         _businessDataPool = _world.GetPool<c_BusinessData>();
         _balancePool = _world.GetPool<c_Balance>();
+        _updateBalancePool = _world.GetPool<r_UpdateBalance>();
     }
 
     public void Run(IEcsSystems systems)
@@ -43,8 +45,8 @@ public sealed class s_IncreaseBusinessLevel : IEcsInitSystem, IEcsRunSystem
                 if (c_playerBalance.Amount.Value >= c_state.LevelUpPrice.Value)
                 {
                     // Update player balance
-                    ref var r_updateBalance = ref _world.GetPool<r_UpdateBalance>().Add(playerEntityUnpacked);
-                    r_updateBalance.Amount = -c_state.LevelUpPrice.Value;
+                    ref var r_updateBalance = ref _updateBalancePool.AddOrGet(playerEntityUnpacked);
+                    r_updateBalance.Amount -= c_state.LevelUpPrice.Value;
 
                     // Update business level
                     // If it was 0 -> 1 transition, then tag as purchased

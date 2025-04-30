@@ -63,4 +63,11 @@ public sealed class IdMapSerializable<T> : IEnumerable<KeyValuePair<int, T>>
 #if UNITY_EDITOR
     private void OnValidate() => _isInitialized = false;
 #endif
+
+    [System.Serializable]
+    public sealed class IdValuePair<T>
+    {
+        public int Id;
+        public T Value;
+    }
 }

@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c20f5b5833b52e46b73bfa2e2adabb1, type: 3}
   m_Name: B2Titles
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: 2
   <BusinessTitle>k__BackingField: Business_2
-  <Upgrade1Title>k__BackingField: B2_Upgrade_1
-  <Upgrade2Title>k__BackingField: B2_Upgrade_2
+  <UpgradeTitlesById>k__BackingField:
+    _pairs:
+    - Id: 1
+      Value: B2_Upgrade_1
+    - Id: 2
+      Value: B2_Upgrade_2

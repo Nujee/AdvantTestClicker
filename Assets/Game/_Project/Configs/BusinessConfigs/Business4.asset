@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f75034b766014f43929f6deebd24809, type: 3}
   m_Name: Business4
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: 4
   <BasePrice>k__BackingField: 1000
   <BaseIncome>k__BackingField: 1000
   <BaseIncomeDelay>k__BackingField: 17
   <Titles>k__BackingField: {fileID: 11400000, guid: f014f29f98ced404ab2c8aca2ad08bda, type: 2}
   <Upgrades>k__BackingField:
-  - {fileID: 11400000, guid: e1bf6c7b54bcfb94d9a70af8809a0446, type: 2}
-  - {fileID: 11400000, guid: bd6ce1d03b1fbb0479d6a10ace6eca44, type: 2}
+  - Id: 1
+    Value: {fileID: 11400000, guid: e1bf6c7b54bcfb94d9a70af8809a0446, type: 2}
+  - Id: 2
+    Value: {fileID: 11400000, guid: bd6ce1d03b1fbb0479d6a10ace6eca44, type: 2}

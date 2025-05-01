@@ -3,14 +3,14 @@ using System.Linq;
 
 public sealed class s_UpdateBusinessIncome : IEcsInitSystem, IEcsRunSystem
 {
-    private EcsPool<c_BusinessState> _businessStatePool = default;
-    private EcsPool<c_BusinessData> _businessDataPool = default;
-    private EcsPool<c_BusinessUpgrades> _businessUpgradesPool = default;    
-    private EcsPool<r_UpdateBusinessIncome> _updateBusinessIncomeRequestPool = default;
+    private EcsPool<c_BusinessState> _businessStatePool;
+    private EcsPool<c_BusinessData> _businessDataPool;
+    private EcsPool<c_BusinessUpgrades> _businessUpgradesPool;    
+    private EcsPool<r_UpdateBusinessIncome> _updateBusinessIncomeRequestPool;
 
-    private EcsFilter _ownedBusinessWithIncomeToUpdateFilter = default;
+    private EcsFilter _ownedBusinessWithIncomeToUpdateFilter;
 
-    private EcsWorld _world = default;
+    private EcsWorld _world;
 
     private readonly GameSettingsConfig _settings;
 

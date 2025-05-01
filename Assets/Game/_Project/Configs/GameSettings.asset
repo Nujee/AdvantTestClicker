@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 299a72a8943896f44834a36a88897e6a, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  <InitialBalance>k__BackingField: 0
+  <InitialBalance>k__BackingField: 400
   <BusinessConfigsById>k__BackingField:
     _pairs:
     - Id: 1

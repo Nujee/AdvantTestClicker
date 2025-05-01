@@ -65,9 +65,9 @@ public sealed class IdMapSerializable<T> : IEnumerable<KeyValuePair<int, T>>
 #endif
 
     [System.Serializable]
-    public sealed class IdValuePair<T>
+    public sealed class IdValuePair<K>
     {
         public int Id;
-        public T Value;
+        public K Value;
     }
 }

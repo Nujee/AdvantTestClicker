@@ -157,10 +157,9 @@ public sealed class EntryPoint : MonoBehaviour
         _world?.Destroy();
     }
 
-    private void OnApplicationQuit()
-    {
-        _saveService.SaveProgress();
-    }
+    private void OnApplicationPause() => _saveService.SaveProgress();
+
+    private void OnApplicationQuit() => _saveService.SaveProgress();
 
     private void ResetScrollToTop()
     {

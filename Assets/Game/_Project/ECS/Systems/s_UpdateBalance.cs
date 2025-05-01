@@ -2,12 +2,12 @@ using Leopotam.EcsLite;
 
 public sealed class s_UpdateBalance : IEcsInitSystem, IEcsRunSystem
 {
-    private EcsPool<c_Balance> _balancePool = default;
-    private EcsPool<r_UpdateBalance> _updateBalanceRequestPool = default;
+    private EcsPool<c_Balance> _balancePool;
+    private EcsPool<r_UpdateBalance> _updateBalanceRequestPool;
 
-    private EcsFilter _balanceToUpdateFilter = default;
+    private EcsFilter _balanceToUpdateFilter;
 
-    private EcsWorld _world = default;
+    private EcsWorld _world;
 
     public void Init(IEcsSystems systems)
     {

@@ -2,14 +2,14 @@ using Leopotam.EcsLite;
 
 public sealed class s_IncreaseBusinessLevel : IEcsInitSystem, IEcsRunSystem
 {
-    private EcsPool<c_BusinessState> _businessStatePool = default;
-    private EcsPool<c_BusinessData> _businessDataPool = default;
-    private EcsPool<c_Balance> _balancePool = default;
-    private EcsPool<r_UpdateBalance> _updateBalancePool = default;
+    private EcsPool<c_BusinessState> _businessStatePool;
+    private EcsPool<c_BusinessData> _businessDataPool;
+    private EcsPool<c_Balance> _balancePool;
+    private EcsPool<r_UpdateBalance> _updateBalancePool;
 
-    private EcsFilter _levelledUpBusinessfilter = default;
+    private EcsFilter _levelledUpBusinessfilter;
 
-    private EcsWorld _world = default;
+    private EcsWorld _world;
 
     private readonly GameSettingsConfig _settings;
 

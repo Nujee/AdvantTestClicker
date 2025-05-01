@@ -3,13 +3,13 @@ using UnityEngine;
 
 public sealed class s_ElapseIncomeDelay : IEcsInitSystem, IEcsRunSystem
 {
-    private EcsPool<c_BusinessState> _businessStatePool = default;
-    private EcsPool<c_BusinessData> _businessDataPool = default;
-    private EcsPool<r_CollectIncome> _collectIncomeRequestPool = default;
+    private EcsPool<c_BusinessState> _businessStatePool;
+    private EcsPool<c_BusinessData> _businessDataPool;
+    private EcsPool<r_CollectIncome> _collectIncomeRequestPool;
 
-    private EcsFilter _ownedBusinessFilter = default;
+    private EcsFilter _ownedBusinessFilter;
 
-    private EcsWorld _world = default;
+    private EcsWorld _world;
 
     private readonly GameSettingsConfig _settings;
 

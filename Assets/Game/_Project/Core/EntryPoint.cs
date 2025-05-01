@@ -25,6 +25,8 @@ public sealed class EntryPoint : MonoBehaviour
 
         var playerEntity = _world.NewEntity();
 
+        // Player initialization is split to let BusinessView subscribe to reactive properties
+        // before initial values are set, ensuring proper visual updates.
         InitPlayer();
         InitBusinesses();
         SetupPlayer();
@@ -35,8 +37,6 @@ public sealed class EntryPoint : MonoBehaviour
         void InitPlayer()
         {
             ref var c_playerBalance = ref _world.GetPool<c_Balance>().Add(playerEntity);
-            BalancePanelView.Init(_world, playerEntity);
-            c_playerBalance.Amount.Value = saveData.PlayerBalance;
         }
 
         void InitBusinesses()
@@ -62,7 +62,7 @@ public sealed class EntryPoint : MonoBehaviour
                 InitState();
                 InitView();
                 InitUpgrades();
-                SetStateValues();
+                SetupState();
 
                 void InitData()
                 {
@@ -108,7 +108,7 @@ public sealed class EntryPoint : MonoBehaviour
                     }
                 }
 
-                void SetStateValues()
+                void SetupState()
                 {
                     ref var c_state = ref _world.GetPool<c_BusinessState>().Get(businessEntity);
 

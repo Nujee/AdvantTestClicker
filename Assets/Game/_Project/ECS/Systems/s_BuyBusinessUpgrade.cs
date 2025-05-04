@@ -42,14 +42,14 @@ public sealed class s_BuyBusinessUpgrade : IEcsInitSystem, IEcsRunSystem
                 var isUpgradePurchased = upgradePurchaseData.Value.isPurchased;
                 var upgradePrice = upgradePurchaseData.Value.price;
 
-                // Check if (upgrade is not purchased) and (balance is enough to buy it)
+                // Check if [upgrade is not purchased] and [balance is enough to buy it]
                 if (!isUpgradePurchased && c_playerBalance.Amount.Value >= upgradePrice)
                 {
                     // Update player balance
-                    ref var r_updateBalance = ref _world.GetPool<r_UpdateBalance>().Add(playerEntityUnpacked);
-                    r_updateBalance.Amount = -upgradePrice;
+                    ref var r_updateBalance = ref _world.GetPool<r_UpdateBalance>().AddOrGet(playerEntityUnpacked);
+                    r_updateBalance.ByAmount -= upgradePrice;
 
-                    // Update upgrade purchase data
+                    // Update upgrade purchase data (true is for isPurchased)
                     upgradePurchaseData.Value = (upgradePrice, true);
 
                     // Update business income

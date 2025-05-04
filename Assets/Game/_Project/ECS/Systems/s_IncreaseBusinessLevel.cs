@@ -46,7 +46,7 @@ public sealed class s_IncreaseBusinessLevel : IEcsInitSystem, IEcsRunSystem
                 {
                     // Update player balance
                     ref var r_updateBalance = ref _updateBalancePool.AddOrGet(playerEntityUnpacked);
-                    r_updateBalance.Amount -= c_state.LevelUpPrice.Value;
+                    r_updateBalance.ByAmount -= c_state.LevelUpPrice.Value;
 
                     // Update business level
                     // If it was 0 -> 1 transition, then tag as purchased

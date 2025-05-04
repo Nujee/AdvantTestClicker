@@ -28,7 +28,7 @@ public sealed class s_UpdateBalance : IEcsInitSystem, IEcsRunSystem
             ref var c_balance = ref _balancePool.Get(balanceEntity);
             ref var r_updateBalance = ref _updateBalanceRequestPool.Get(balanceEntity);
 
-            c_balance.Amount.Value += r_updateBalance.Amount;
+            c_balance.Amount.Value += r_updateBalance.ByAmount;
 
             _updateBalanceRequestPool.Del(balanceEntity);
         }

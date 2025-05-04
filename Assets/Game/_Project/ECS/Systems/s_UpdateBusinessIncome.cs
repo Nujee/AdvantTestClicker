@@ -1,5 +1,4 @@
 using Leopotam.EcsLite;
-using System.Linq;
 
 public sealed class s_UpdateBusinessIncome : IEcsInitSystem, IEcsRunSystem
 {
@@ -43,9 +42,14 @@ public sealed class s_UpdateBusinessIncome : IEcsInitSystem, IEcsRunSystem
 
             var config = _settings.BusinessConfigsById[c_data.Id];
 
-            var totalUpgradesFactor = c_upgrades.InfoById
-                .Where(u => u.Value.PurchaseData.Value.isPurchased)
-                .Sum(u => u.Value.Factor);
+            var totalUpgradesFactor = 0f;
+            foreach (var upgradeInfo in c_upgrades.InfoById)
+            {
+                var isUpgradePurchased = upgradeInfo.Value.PurchaseData.Value.isPurchased;
+
+                if (isUpgradePurchased)
+                    totalUpgradesFactor += upgradeInfo.Value.Factor;
+            }
 
             c_state.Income.Value = c_state.Level.Value * config.BaseIncome * (1 + totalUpgradesFactor);
 

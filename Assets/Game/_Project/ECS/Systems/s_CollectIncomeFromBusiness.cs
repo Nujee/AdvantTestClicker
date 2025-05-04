@@ -41,10 +41,10 @@ public sealed class s_CollectIncomeFromBusiness : IEcsInitSystem, IEcsRunSystem
 
             if (c_data.PlayerEntityPacked.Unpack(_world, out var playerEntityUnpacked))
             {
-                ref var r_updateBalance = ref _updateBalanceRequestPool.Add(playerEntityUnpacked);
+                ref var r_updateBalance = ref _updateBalanceRequestPool.AddOrGet(playerEntityUnpacked);
 
                 var config = _settings.BusinessConfigsById[c_data.Id];;
-                r_updateBalance.Amount = c_state.Income.Value;
+                r_updateBalance.ByAmount += c_state.Income.Value;
             }
 
             _collectIncomeRequestPool.Del(businessEntity);

@@ -5,7 +5,8 @@ using System.Linq;
 using UnityEngine;
 
 /// <summary>
-/// Serializable map with integer keys (IDs) for use in inspector
+/// Lazily initialized dictionary for fast access by 
+/// integer IDs with a list as its seralizable placeholder in Inspector
 /// </summary>
 /// /// <typeparam name="T">Value type associated with ID.</typeparam>
 [Serializable]

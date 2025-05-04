@@ -2,6 +2,7 @@ using UnityEngine;
 using Leopotam.EcsLite;
 using UnityEngine.UI;
 
+[DisallowMultipleComponent]
 public sealed class EntryPoint : MonoBehaviour
 {
     [field: SerializeField] public BalancePanelView BalancePanelView { get; private set; }
@@ -118,7 +119,7 @@ public sealed class EntryPoint : MonoBehaviour
 
                     var rawDelay = businessSaveData.IncomeDelay;
                     var normalizedDelay = rawDelay / businessConfig.BaseIncomeDelay;
-                    c_state.IncomeDelayElapsed.Value = (rawDelay, normalizedDelay);
+                    c_state.ElapsedIncomeDelay.Value = (rawDelay, normalizedDelay);
 
                     if (c_state.Level.Value >= 1)
                         _world.GetPool<t_IsPurchased>().Add(businessEntity);
@@ -141,7 +142,7 @@ public sealed class EntryPoint : MonoBehaviour
                 .Add(new s_IncreaseBusinessLevel(Settings))
                 .Add(new s_BuyBusinessUpgrade())
                 .Add(new s_ElapseIncomeDelay(Settings))
-                .Add(new s_CollectBusinessIncome(Settings))
+                .Add(new s_CollectIncomeFromBusiness(Settings))
                 .Init();
         }
     }

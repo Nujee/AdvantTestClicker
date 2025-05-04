@@ -16,6 +16,6 @@ MonoBehaviour:
   <UpgradeTitlesById>k__BackingField:
     _pairs:
     - Id: 1
-      Value: B2_Upgrade_1
+      Value: Upgrade 1
     - Id: 2
-      Value: B2_Upgrade_2
+      Value: Upgrade 2

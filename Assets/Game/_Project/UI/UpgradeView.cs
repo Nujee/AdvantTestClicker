@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DisallowMultipleComponent]
 public sealed class UpgradeView : MonoBehaviour
 {
     private ReactiveProperty<(float price, bool isPurchased)> _purchaseData;
@@ -14,38 +15,53 @@ public sealed class UpgradeView : MonoBehaviour
     [field: SerializeField] public TMP_Text FactorText { get; private set; }
     [field: SerializeField] public TMP_Text PurchaseDataText { get; private set; }
 
-    public void Init(int upgradeId, GameSettingsConfig settings, 
+    public void Init(int upgradeId, GameSettingsConfig settings,
         EcsWorld world, int businessEntity, int playerEntity)
     {
-        ref var c_businessData = ref world.GetPool<c_BusinessData>().Get(businessEntity);
-        ref var c_businessState = ref world.GetPool<c_BusinessState>().Get(businessEntity);
-        ref var c_businessUpgrades = ref world.GetPool<c_BusinessUpgrades>().Get(businessEntity);
-        ref var c_balance = ref world.GetPool<c_Balance>().Get(playerEntity);
+        SetupTitle();
+        SubscribeToUpgradeChanges();
+        SubscribeToBalanceChanges();
+        SubscribeToBusinessLevelChanges();
+        SetupUpgradeClickHandler();
 
-        var businessConfig = settings.BusinessConfigsById[c_businessData.Id];
-
-        var upgradeTitle = businessConfig.Titles.UpgradeTitlesById[upgradeId];
-        TitleText.text = upgradeTitle;
-
-        var percentFactor = businessConfig.Upgrades[upgradeId].PercentFactor;
-        FactorText.text = $"Доход: +{percentFactor}%";
-
-        var upgradeInfo = c_businessUpgrades.InfoById[upgradeId];
-        _purchaseData = upgradeInfo.PurchaseData;
-        _purchaseData.OnValueSet += UpdateUpgradePurchaseDataText;
-        _purchaseData.OnValueSet += UpdateButtonState;
-
-        _balance = c_balance.Amount;
-        _balance.OnValueSet += UpdateButtonState;
-
-        _level = c_businessState.Level;
-        _level.OnValueSet += UpdateButtonState;
-
-        BuyButton.onClick.AddListener(() =>
+        void SetupTitle()
         {
-            ref var r_upgradeClicked = ref world.GetPool<r_UpgradeClicked>().Add(businessEntity);
-            r_upgradeClicked.UpgradeId = upgradeId;
-        });
+            ref var c_businessData = ref world.GetPool<c_BusinessData>().Get(businessEntity);
+            var title = settings.BusinessConfigsById[c_businessData.Id].Titles.UpgradeTitlesById[upgradeId];
+            TitleText.text = title;
+        }
+
+        void SubscribeToUpgradeChanges()
+        {
+            ref var c_businessUpgrades = ref world.GetPool<c_BusinessUpgrades>().Get(businessEntity);
+            var upgradeInfo = c_businessUpgrades.InfoById[upgradeId];
+            _purchaseData = upgradeInfo.PurchaseData;
+            _purchaseData.OnValueSet += UpdateUpgradePurchaseDataText;
+            _purchaseData.OnValueSet += UpdateButtonState;
+        }
+
+        void SubscribeToBalanceChanges()
+        {
+            ref var c_balance = ref world.GetPool<c_Balance>().Get(playerEntity);
+            _balance = c_balance.Amount;
+            _balance.OnValueSet += UpdateButtonState;
+        }
+
+        void SubscribeToBusinessLevelChanges()
+        {
+            ref var c_businessState = ref world.GetPool<c_BusinessState>().Get(businessEntity);
+            _level = c_businessState.Level;
+            _level.OnValueSet += UpdateButtonState;
+        }
+
+        void SetupUpgradeClickHandler()
+        {
+            BuyButton.onClick.AddListener(() =>
+            {
+                ref var r_upgradeClicked = ref world.GetPool<r_UpgradeClicked>().Add(businessEntity);
+                r_upgradeClicked.UpgradeId = upgradeId;
+            });
+        }
     }
 
     private void OnDestroy()

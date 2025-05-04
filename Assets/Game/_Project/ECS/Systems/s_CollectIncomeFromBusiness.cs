@@ -1,6 +1,6 @@
 using Leopotam.EcsLite;
 
-public sealed class s_CollectBusinessIncome : IEcsInitSystem, IEcsRunSystem
+public sealed class s_CollectIncomeFromBusiness : IEcsInitSystem, IEcsRunSystem
 {
     private EcsPool<c_BusinessState> _businessStatePool;
     private EcsPool<c_BusinessData> _businessDataPool;
@@ -13,7 +13,7 @@ public sealed class s_CollectBusinessIncome : IEcsInitSystem, IEcsRunSystem
 
     private readonly GameSettingsConfig _settings;
 
-    public s_CollectBusinessIncome(GameSettingsConfig settings) => _settings = settings;
+    public s_CollectIncomeFromBusiness(GameSettingsConfig settings) => _settings = settings;
 
     public void Init(IEcsSystems systems)
     {

@@ -13,5 +13,5 @@ public sealed class ReactiveProperty<T>
             _value = value;
             OnValueSet?.Invoke(_value);
         }
-    }
+    } 
 }

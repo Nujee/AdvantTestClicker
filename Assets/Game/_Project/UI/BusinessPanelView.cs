@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DisallowMultipleComponent]
 public sealed class BusinessPanelView : MonoBehaviour
 {
     private ReactiveProperty<float> _income;
@@ -21,32 +22,51 @@ public sealed class BusinessPanelView : MonoBehaviour
 
     public void Init(GameSettingsConfig settings, EcsWorld world, int businessEntity, int playerEntity)
     {
-        ref var c_state = ref world.GetPool<c_BusinessState>().Get(businessEntity);
-        ref var c_data = ref world.GetPool<c_BusinessData>().Get(businessEntity);
-        ref var c_balance = ref world.GetPool<c_Balance>().Get(playerEntity); 
+        SetupTitle();
+        SubscribeToBusinessStateChanges();
+        SubscribeToBalanceChanges();
+        SetupLevelUpClickHandler();
 
-        var titleConfig = settings.BusinessConfigsById[c_data.Id].Titles;
-        TitleText.text = titleConfig.BusinessTitle;
-
-        _income = c_state.Income;
-        _income.OnValueSet += UpdateIncomeText;
-
-        _level = c_state.Level;
-        _level.OnValueSet += UpdateLevelText;
-
-        _levelUpPrice = c_state.LevelUpPrice;
-        _levelUpPrice.OnValueSet += UpdateLevelUpPriceText;
-
-        _incomeDelay = c_state.IncomeDelayElapsed;
-        _incomeDelay.OnValueSet += UpdateIncomeDelaySlider;
-
-        _balance = c_balance.Amount;
-        _balance.OnValueSet += UpdateLevelUpButtonState;
-
-        LevelUpButton.onClick.AddListener(() =>
+        void SetupTitle()
         {
-            world.GetPool<r_LevelUpClicked>().Add(businessEntity);
-        });
+            ref var c_data = ref world.GetPool<c_BusinessData>().Get(businessEntity);
+
+            var titleConfig = settings.BusinessConfigsById[c_data.Id].Titles;
+            TitleText.text = titleConfig.BusinessTitle;
+        }
+
+        void SubscribeToBusinessStateChanges()
+        {
+            ref var c_state = ref world.GetPool<c_BusinessState>().Get(businessEntity);
+
+            _income = c_state.Income;
+            _income.OnValueSet += UpdateIncomeText;
+
+            _level = c_state.Level;
+            _level.OnValueSet += UpdateLevelText;
+
+            _levelUpPrice = c_state.LevelUpPrice;
+            _levelUpPrice.OnValueSet += UpdateLevelUpPriceText;
+
+            _incomeDelay = c_state.ElapsedIncomeDelay;
+            _incomeDelay.OnValueSet += UpdateIncomeDelaySlider;
+        }
+
+        void SubscribeToBalanceChanges()
+        {
+            ref var c_balance = ref world.GetPool<c_Balance>().Get(playerEntity);
+
+            _balance = c_balance.Amount;
+            _balance.OnValueSet += UpdateLevelUpButtonState;
+        }
+
+        void SetupLevelUpClickHandler()
+        {
+            LevelUpButton.onClick.AddListener(() =>
+            {
+                world.GetPool<r_LevelUpClicked>().Add(businessEntity);
+            });
+        }
     }
 
     private void OnDestroy()
@@ -62,6 +82,8 @@ public sealed class BusinessPanelView : MonoBehaviour
 
         if (_incomeDelay != null)
             _incomeDelay.OnValueSet -= UpdateIncomeDelaySlider;
+
+        LevelUpButton.onClick.RemoveAllListeners();
     }
 
     private void UpdateIncomeText(float newIncome)

@@ -38,17 +38,22 @@ public sealed class s_ElapseIncomeDelay : IEcsInitSystem, IEcsRunSystem
             ref var c_data = ref _businessDataPool.Get(businessEntity);
 
             var config = _settings.BusinessConfigsById[c_data.Id];
+            var isDelayOver = (c_state.ElapsedIncomeDelay.Value.raw >= config.BaseIncomeDelay);
+            (float raw, float normalized) updatedDelay;
 
-            var raw = c_state.IncomeDelayElapsed.Value.raw + Time.deltaTime;
-            var normalized = raw / config.BaseIncomeDelay;
-            c_state.IncomeDelayElapsed.Value = (raw, normalized);
-
-            if (c_state.IncomeDelayElapsed.Value.raw >= config.BaseIncomeDelay)
+            if (isDelayOver)
             {
                 _collectIncomeRequestPool.Add(businessEntity);
-
-                c_state.IncomeDelayElapsed.Value = (0f, 0f);
+                updatedDelay = (0f, 0f);
             }
+            else
+            {
+                float newRaw = c_state.ElapsedIncomeDelay.Value.raw + Time.deltaTime;
+                float newNormalized = newRaw / config.BaseIncomeDelay;
+                updatedDelay = (newRaw, newNormalized);
+            }
+
+            c_state.ElapsedIncomeDelay.Value = updatedDelay;
         }
     }
 }

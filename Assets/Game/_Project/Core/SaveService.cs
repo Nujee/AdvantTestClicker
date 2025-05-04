@@ -25,7 +25,7 @@ public sealed class SaveService
         var jsonData = new JsonSaveData();
         try
         {
-            string json = File.ReadAllText(SavePath);
+            var json = File.ReadAllText(SavePath);
             jsonData = JsonUtility.FromJson<JsonSaveData>(json);
             return ConvertFromJson();
         }
@@ -50,10 +50,12 @@ public sealed class SaveService
                 foreach (var upgradePair in config.Upgrades)
                     upgradeStatuses[upgradePair.Key] = false;
 
-                // If dict is empty, then newly created BusinessData is the 1st one,
-                // so its level is set to 1, and 0 for all of the rest.
+                // If dict is empty (count == 0), then newly created BusinessData is the 1st one in it -
+                //  - meeting the condition of the 1st business being lvl_1 and others being lvl_0.
+                var defaultLevel = (businessesById.Count == 0) ? 1 : 0;
+
                 businessesById[businessId] = new BusinessData(
-                    level: (businessesById.Count == 0) ? 1 : 0,
+                    level: defaultLevel,
                     income: config.BaseIncome,
                     delay: 0f,
                     upgradeStatusesById: upgradeStatuses
@@ -144,7 +146,7 @@ public sealed class SaveService
                     Id = data.Id,
                     Level = state.Level.Value,
                     Income = state.Income.Value,
-                    IncomeDelay = state.IncomeDelayElapsed.Value.raw,
+                    IncomeDelay = state.ElapsedIncomeDelay.Value.raw,
                     Upgrades = upgradesData
                 };
             }

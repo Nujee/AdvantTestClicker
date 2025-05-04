@@ -77,6 +77,8 @@ public sealed class UpgradeView : MonoBehaviour
 
         if (_level != null)
             _level.OnValueSet -= UpdateButtonState;
+
+        BuyButton.onClick.RemoveAllListeners();
     }
 
     private void UpdateUpgradePurchaseDataText((float price, bool isPurchased) purchaseData)

@@ -6,9 +6,9 @@ using UnityEngine.UI;
 [DisallowMultipleComponent]
 public sealed class UpgradeView : MonoBehaviour
 {
-    private ReactiveProperty<(float price, bool isPurchased)> _purchaseData;
     private ReactiveProperty<float> _balance;
     private ReactiveProperty<int> _level;
+    private ReactiveProperty<(float price, bool isPurchased)> _purchaseData;
 
     [field: SerializeField] public Button BuyButton { get; private set; }
     [field: SerializeField] public TMP_Text TitleText { get; private set; }
@@ -19,25 +19,20 @@ public sealed class UpgradeView : MonoBehaviour
         EcsWorld world, int businessEntity, int playerEntity)
     {
         SetupTitle();
-        SubscribeToUpgradeChanges();
         SubscribeToBalanceChanges();
         SubscribeToBusinessLevelChanges();
+        SubscribeToUpgradeInfoChanges();
         SetupUpgradeClickHandler();
 
         void SetupTitle()
         {
+
             ref var c_businessData = ref world.GetPool<c_BusinessData>().Get(businessEntity);
             var title = settings.BusinessConfigsById[c_businessData.Id].Titles.UpgradeTitlesById[upgradeId];
             TitleText.text = title;
-        }
 
-        void SubscribeToUpgradeChanges()
-        {
-            ref var c_businessUpgrades = ref world.GetPool<c_BusinessUpgrades>().Get(businessEntity);
-            var upgradeInfo = c_businessUpgrades.InfoById[upgradeId];
-            _purchaseData = upgradeInfo.PurchaseData;
-            _purchaseData.OnValueSet += UpdateUpgradePurchaseDataText;
-            _purchaseData.OnValueSet += UpdateButtonState;
+            var percentFactor = settings.BusinessConfigsById[c_businessData.Id].Upgrades[upgradeId].PercentFactor;
+            FactorText.text = $"Доход: +{percentFactor}%";
         }
 
         void SubscribeToBalanceChanges()
@@ -54,6 +49,15 @@ public sealed class UpgradeView : MonoBehaviour
             _level.OnValueSet += UpdateButtonState;
         }
 
+        void SubscribeToUpgradeInfoChanges()
+        {
+            ref var c_businessUpgrades = ref world.GetPool<c_BusinessUpgrades>().Get(businessEntity);
+            var upgradeInfo = c_businessUpgrades.InfoById[upgradeId];
+            _purchaseData = upgradeInfo.PurchaseData;
+            _purchaseData.OnValueSet += UpdateUpgradePurchaseDataText;
+            _purchaseData.OnValueSet += UpdateButtonState;
+        }
+
         void SetupUpgradeClickHandler()
         {
             BuyButton.onClick.AddListener(() =>
@@ -66,19 +70,36 @@ public sealed class UpgradeView : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_purchaseData != null)
-        {
-            _purchaseData.OnValueSet -= UpdateUpgradePurchaseDataText;
-            _purchaseData.OnValueSet -= UpdateButtonState;
-        }
-
         if (_balance != null)
             _balance.OnValueSet -= UpdateButtonState;
 
         if (_level != null)
             _level.OnValueSet -= UpdateButtonState;
 
+        if (_purchaseData != null)
+        {
+            _purchaseData.OnValueSet -= UpdateUpgradePurchaseDataText;
+            _purchaseData.OnValueSet -= UpdateButtonState;
+        }
+
         BuyButton.onClick.RemoveAllListeners();
+    }
+
+    private void UpdateButtonState(float _) => UpdateButtonInteractability();
+    private void UpdateButtonState((float, bool) _) => UpdateButtonInteractability();
+    private void UpdateButtonState(int _) => UpdateButtonInteractability();
+
+    private void UpdateButtonInteractability()
+    {
+        var isBusinessPurchased = _level.Value > 0;
+        var isUpgradeNotPurchased = !_purchaseData.Value.isPurchased;
+        var isBalanceEnough = _balance.Value >= _purchaseData.Value.price;
+
+        var isPurchasable = isBusinessPurchased &&
+                            isUpgradeNotPurchased &&
+                            isBalanceEnough;
+
+        BuyButton.interactable = isPurchasable;
     }
 
     private void UpdateUpgradePurchaseDataText((float price, bool isPurchased) purchaseData)
@@ -87,19 +108,4 @@ public sealed class UpgradeView : MonoBehaviour
             ? "Куплено"
             : $"Цена: {purchaseData.price:0.##}$";
     }
-
-    private void UpdateButtonState()
-    {
-        var isBusinessPurchased = _level.Value > 0;
-        var isUpgradeNotPurchased = !_purchaseData.Value.isPurchased;
-        var isBalanceEnough = _balance.Value >= _purchaseData.Value.price;
-
-        BuyButton.interactable = isBusinessPurchased &&
-                                 isUpgradeNotPurchased &&
-                                 isBalanceEnough;
-    }
-
-    private void UpdateButtonState(float _) => UpdateButtonState();
-    private void UpdateButtonState((float, bool) _) => UpdateButtonState();
-    private void UpdateButtonState(int _) => UpdateButtonState();
 }
